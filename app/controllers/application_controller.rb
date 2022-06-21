@@ -20,7 +20,11 @@ class ApplicationController < Sinatra::Base
     game = Game.find(params[:id])
 
     # send a JSON-formatted response of the game data
-    game.to_json
+    game.to_json(only: [:id, :title, :genre, :price], include: {
+      reviews: {only: [:comment, :score], include: {
+      user: {only: [:name] }
+      } }
+    })
   end
 
 end
